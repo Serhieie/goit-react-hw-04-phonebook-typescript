@@ -1,21 +1,27 @@
-import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
-import { schema } from 'constants';
+import { schema } from 'constants/schema';
 import { succesMessage, nameCheckerError } from '../../helpers/notiflix';
 import { Input } from '../ContactFormInput/ContactFormInput';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import normalizePhoneNumber from '../../helpers/numberNormalize';
 import normalizeName from 'helpers/nameNormalize';
 import { ErrorMessage } from 'formik';
+import { ContactFormProps } from './ContactForm.types';
 
 const initialValues = {
   name: '',
   number: '',
 };
 
-export function ContactForm({ contacts, onSubmit }) {
-  const handleSubmit = (event, { resetForm }) => {
-    const { name, number } = event;
+export const ContactForm: React.FC<ContactFormProps> = ({
+  contacts,
+  onSubmit,
+}) => {
+  const handleSubmit = (
+    values: { name: string; number: string },
+    { resetForm }: { resetForm: () => void }
+  ) => {
+    const { name, number } = values;
 
     let someNum = normalizePhoneNumber(number);
     let normName = normalizeName(name);
@@ -76,8 +82,4 @@ export function ContactForm({ contacts, onSubmit }) {
       </Form>
     </Formik>
   );
-}
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
 };

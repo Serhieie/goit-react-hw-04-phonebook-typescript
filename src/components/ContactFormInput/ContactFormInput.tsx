@@ -2,7 +2,7 @@ import { LiaUserEditSolid } from 'react-icons/lia';
 import { FiPhoneMissed } from 'react-icons/fi';
 import { Field } from 'formik';
 
-export function Input() {
+export const Input: React.FC = () => {
   return (
     <>
       <label
@@ -43,4 +43,4 @@ export function Input() {
       />
     </>
   );
-}
+};

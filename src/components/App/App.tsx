@@ -6,34 +6,36 @@ import { useLocalStorage } from 'hooks/useLocalStorage';
 import { Filter } from 'components/Filter/Filter';
 import { nanoid } from 'nanoid';
 import normalizePhoneNumber from '../../helpers/numberNormalize';
+import { Contact } from './App.styles';
 
-export function App() {
-  const [filter, setFilter] = useState('');
+export const App = (): JSX.Element => {
+  const [filter, setFilter] = useState<string>('');
   const [contacts, setContacts] = useLocalStorage('contacts', []);
 
-  const addContact = (name, number) => {
-    const contact = {
+  const addContact = (name: string, number: string): void => {
+    const contact: Contact = {
       id: nanoid(),
       name,
       number: normalizePhoneNumber(number),
     };
-    setContacts(contacts => [contact, ...contacts]);
+    setContacts((prevContacts: Contact[]) => [contact, ...prevContacts]);
   };
 
-  const deleteContact = contactId => {
-    setContacts(prevState =>
-      prevState.filter(contact => contact.id !== contactId)
+  const deleteContact = (contactId: string): void => {
+    setContacts((prevContacts: Contact[]) =>
+      prevContacts.filter((contact: Contact) => contact.id !== contactId)
     );
   };
 
-  const getVisibleContacts = () => {
+  const getVisibleContacts = (): Contact[] => {
     const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
+    return contacts.filter((contact: Contact) =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
-  const visibleContacts = getVisibleContacts();
+  const visibleContacts: Contact[] = getVisibleContacts();
+
   return (
     <div
       className="
@@ -56,7 +58,12 @@ export function App() {
           opacity-40 z-10 text-filterPlaceholderColor md:w-5 md:h-5 
           md:top-16 md:left-1/4 md2:max-w-sm md2:top-9 md2:left-1/5 ssm:hidden"
         />
-        <Filter forFilter={filter} onChange={setFilter} />
+        <Filter
+          value={filter}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setFilter(event.target.value)
+          }
+        />
         <ContactTable
           getVisibleContacts={visibleContacts}
           onDeleteContact={deleteContact}
@@ -64,4 +71,4 @@ export function App() {
       </div>
     </div>
   );
-}
+};

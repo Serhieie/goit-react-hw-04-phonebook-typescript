@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import { FilterProps } from './Filter.types';
 
-export function Filter({ value, onChange }) {
+export const Filter: React.FC<FilterProps> = ({ value, onChange }) => {
   return (
     <label
       className="bg-filterLabelColor w-[58%] mx-auto mb-2 mt-5 py-1 px-5
@@ -9,10 +9,8 @@ export function Filter({ value, onChange }) {
       <input
         placeholder="Enter name for filter"
         type="text"
-        filter={value}
-        onChange={event => {
-          onChange(event.currentTarget.value);
-        }}
+        value={value}
+        onChange={onChange}
         className="placeholder:opacity-50 flex text-4 font-medium bg-lightPartsColor
         text-darkFont border-none outline-none w-11/12 max-w-[480px] h-10 rounded 
         mx-auto opacity-70 text-center py-0.5 pr-2 pl-7 placeholder:text-center  
@@ -21,9 +19,4 @@ export function Filter({ value, onChange }) {
       />
     </label>
   );
-}
-
-Filter.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func,
 };
